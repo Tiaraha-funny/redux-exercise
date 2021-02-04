@@ -855,7 +855,45 @@ function isCrushed() {}
 if ("development" !== 'production' && typeof isCrushed.name === 'string' && isCrushed.name !== 'isCrushed') {
   warning('You are currently using minified code outside of NODE_ENV === "production". ' + 'This means that you are running a slower development build of Redux. ' + 'You can use loose-envify (https://github.com/zertosh/loose-envify) for browserify ' + 'or setting mode to production in webpack (https://webpack.js.org/concepts/mode/) ' + 'to ensure you have the correct code for your production build.');
 }
-},{"symbol-observable":"node_modules/symbol-observable/es/index.js"}],"index.js":[function(require,module,exports) {
+},{"symbol-observable":"node_modules/symbol-observable/es/index.js"}],"redux/count.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.changeCount = changeCount;
+exports.default = countReducer;
+
+function changeCount() {
+  var amount = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+  return {
+    type: "CHANGE_COUNT",
+    payload: amount
+  };
+}
+
+function countReducer() {
+  var count = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case "CHANGE_COUNT":
+      return count + action.payload;
+
+    default:
+      return count;
+  }
+}
+},{}],"redux/favoriteThing.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.addFavoriteThing = addFavoriteThing;
+exports.removeFavoriteThing = removeFavoriteThing;
+exports.default = FavoriteThingsReducer;
+
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -868,19 +906,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var redux = require("redux");
-
-var initialState = {
-  count: 0,
-  favoriteThings: []
-};
-
 function addFavoriteThing(thing) {
   return {
     type: "ADD_FAVORITE_THING",
@@ -891,42 +916,261 @@ function addFavoriteThing(thing) {
 function removeFavoriteThing(thing) {
   return {
     type: "REMOVE_FAVORITE_THING",
-    payLoad: thing
+    payload: thing
   };
 }
 
-function reducer() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+function FavoriteThingsReducer() {
+  var favoriteThings = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
   var action = arguments.length > 1 ? arguments[1] : undefined;
 
   switch (action.type) {
     case "ADD_FAVORITE_THING":
-      {
-        return _objectSpread(_objectSpread({}, state), {}, {
-          favoriteThings: [].concat(_toConsumableArray(state.favoriteThings), [action.payLoad])
-        });
-      }
+      return [].concat(_toConsumableArray(favoriteThings), [action.payload]);
 
     case "REMOVE_FAVORITE_THING":
-      return _objectSpread(_objectSpread({}, state), {}, {
-        favoriteThings: state.favoriteThings.filter(function (thing) {
-          return thing !== action.payLoad;
+      var updatedArr = favoriteThings.filter(function (thing) {
+        return thing.toLowerCase() !== action.payload.toLowerCase();
+      });
+      return updatedArr;
+
+    default:
+      {
+        return favoriteThings;
+      }
+  }
+}
+},{}],"redux/youTubeVideo.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.setYouTubeTitle = setYouTubeTitle;
+exports.incrementViewCount = incrementViewCount;
+exports.upvoteVideo = upvoteVideo;
+exports.downvoteVideo = downvoteVideo;
+exports.default = YouTubeVideoReducer;
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function setYouTubeTitle(title) {
+  return {
+    type: "SET_YOUTUBE_TITLE",
+    payload: title
+  };
+}
+
+function incrementViewCount() {
+  return {
+    type: "INCREMENT_VIEW_COUNT"
+  };
+}
+
+function upvoteVideo() {
+  return {
+    type: "UPVOTE_VIDEO"
+  };
+}
+
+function downvoteVideo() {
+  return {
+    type: "DOWNVOTE_VIDEO"
+  };
+}
+
+var initialState = {
+  title: "",
+  viewCount: 0,
+  votes: {
+    up: 0,
+    down: 0
+  }
+};
+
+function YouTubeVideoReducer() {
+  var youtubeVideo = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case "INCREMENT_VIEW_COUNT":
+      return _objectSpread(_objectSpread({}, youtubeVideo), {}, {
+        viewCount: youtubeVideo.viewCount + 1
+      });
+
+    case "SET_YOUTUBE_TITLE":
+      return _objectSpread(_objectSpread({}, youtubeVideo), {}, {
+        title: action.payload
+      });
+
+    case "UPVOTE_VIDEO":
+      return _objectSpread(_objectSpread({}, youtubeVideo), {}, {
+        votes: _objectSpread(_objectSpread({}, youtubeVideo.votes), {}, {
+          up: youtubeVideo.votes.up + 1
+        })
+      });
+
+    case "DOWNVOTE_VIDEO":
+      return _objectSpread(_objectSpread({}, youtubeVideo), {}, {
+        votes: _objectSpread(_objectSpread({}, youtubeVideo.votes), {}, {
+          down: youtubeVideo.votes.down + 1
         })
       });
 
     default:
-      return state;
+      return youtubeVideo;
   }
 }
+},{}],"redux/user.js":[function(require,module,exports) {
+"use strict";
 
-var store = redux.createStore(reducer);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.setUserDetails = setUserDetails;
+exports.resetUserDetails = resetUserDetails;
+exports.default = setuserDetailsReducer;
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+/**
+ * Challenge:
+ *
+ * Create a new state property to hold the currently-logged-in user info. I.e. if our app wanted to allow a user to log in, we would likely want to keep track of some info from the logged in user. For this challenge, you'll save a user with these properties:
+ * {
+ *      firstName: ___,
+ *      lastName: ___,
+ *      id: ___,
+ *      email: ___
+ * }
+ *
+ * This will require
+ *      (1) Creating a new file to hold our new Redux stuff re: the user (e.g. user.js),
+ *      (2) Creating a new action creator (e.g. "setUserDetails"),
+ *      (3) Creating a new reducer, and
+ *      (4) Adding that reducer to our rootReducer with combineReducers
+ */
+function setUserDetails(user) {
+  return {
+    type: "SET_USER_DETAILS",
+    payLoad: user
+  };
+}
+
+function resetUserDetails() {
+  return {
+    type: "REMOVE_USER_DETAILS"
+  };
+}
+
+var initialStateValue = {
+  firstName: "",
+  lastName: "",
+  id: 1,
+  email: ""
+};
+
+function setuserDetailsReducer() {
+  var user = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case "SET_USER_DETAILS":
+      return _objectSpread(_objectSpread({}, user), action.payLoad);
+
+    case "REMOVE_USER_DETAILS":
+      {
+        return null;
+      }
+
+    default:
+      return user;
+  }
+}
+},{}],"redux/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _count = _interopRequireDefault(require("./count"));
+
+var _favoriteThing = _interopRequireDefault(require("./favoriteThing"));
+
+var _youTubeVideo = _interopRequireDefault(require("./youTubeVideo"));
+
+var _user = _interopRequireWildcard(require("./user"));
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var redux = require("redux");
+
+var combineReducers = redux.combineReducers,
+    createStore = redux.createStore;
+var rootReducer = combineReducers(_defineProperty({
+  count: _count.default,
+  favoriteThings: _favoriteThing.default,
+  youTubeVideo: _youTubeVideo.default,
+  user: _user.default
+}, "user", _user.resetUserDetails));
+var store = createStore(rootReducer);
 store.subscribe(function () {
   console.log(store.getState());
 });
-store.dispatch(addFavoriteThing("akoho"));
-store.dispatch(addFavoriteThing("hena"));
-store.dispatch(removeFavoriteThing("akoho"));
-},{"redux":"node_modules/redux/es/redux.js"}],"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+var _default = store; // 
+// store.dispatch(changeCount())
+
+exports.default = _default;
+},{"redux":"node_modules/redux/es/redux.js","./count":"redux/count.js","./favoriteThing":"redux/favoriteThing.js","./youTubeVideo":"redux/youTubeVideo.js","./user":"redux/user.js"}],"index.js":[function(require,module,exports) {
+"use strict";
+
+var _redux = _interopRequireDefault(require("./redux"));
+
+var _count = require("./redux/count");
+
+var _favoriteThing = require("./redux/favoriteThing");
+
+var _youTubeVideo = require("./redux/youTubeVideo");
+
+var _user = require("./redux/user");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_redux.default.dispatch((0, _user.setUserDetails)({
+  firstName: "Peta",
+  lastName: "High",
+  id: 5,
+  email: "pet.je@onja.org"
+}));
+
+_redux.default.dispatch((0, _user.resetUserDetails)());
+
+_redux.default.dispatch((0, _count.changeCount)(42));
+
+_redux.default.dispatch((0, _favoriteThing.addFavoriteThing)("fried chicken"));
+
+_redux.default.dispatch((0, _favoriteThing.removeFavoriteThing)("potatoes"));
+
+_redux.default.dispatch((0, _youTubeVideo.setYouTubeTitle)("Love is blind")); // store.dispatch(incrementViewCount(3));
+// store.dispatch(upvoteVideo(4));
+// store.dispatch(downvoteVideo(1));
+},{"./redux":"redux/index.js","./redux/count":"redux/count.js","./redux/favoriteThing":"redux/favoriteThing.js","./redux/youTubeVideo":"redux/youTubeVideo.js","./redux/user":"redux/user.js"}],"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -954,7 +1198,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61450" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59186" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

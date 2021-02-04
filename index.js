@@ -1,49 +1,30 @@
-const redux = require("redux");
+import store from "./redux";
+import { changeCount } from "./redux/count";
+import { addFavoriteThing, removeFavoriteThing } from "./redux/favoriteThing";
+import {
+  setYouTubeTitle,
+  incrementViewCount,
+  upvoteVideo,
+  downvoteVideo,
+} from "./redux/youTubeVideo";
 
-const initialState = {
-  count: 0,
-  favoriteThings: [],
-};
+import { resetUserDetails, setUserDetails } from "./redux/user";
 
-function addFavoriteThing(thing) {
-  return {
-    type: "ADD_FAVORITE_THING",
-    payload: thing,
-  };
-}
+store.dispatch(
+  setUserDetails({
+    firstName: "Peta",
+    lastName: "High",
+    id: 5,
+    email: "pet.je@onja.org",
+  })
+);
 
-function removeFavoriteThing(thing) {
-  return {
-    type: "REMOVE_FAVORITE_THING",
-    payLoad: thing,
-  };
-}
+store.dispatch(resetUserDetails())
 
-function reducer(state = initialState, action) {
-  switch (action.type) {
-    case "ADD_FAVORITE_THING": {
-      return {
-        ...state,
-        favoriteThings: [...state.favoriteThings, action.payLoad],
-      };
-    }
-
-    case "REMOVE_FAVORITE_THING":
-      return {
-        ...state,
-        favoriteThings: state.favoriteThings.filter((thing) => thing !== action.payLoad),
-      };
-
-    default:
-      return state;
-  }
-}
-
-const store = redux.createStore(reducer);
-store.subscribe(() => {
-  console.log(store.getState());
-});
-
-store.dispatch(addFavoriteThing("akoho"));
-store.dispatch(addFavoriteThing("hena"));
-store.dispatch(removeFavoriteThing("akoho"));
+store.dispatch(changeCount(42));
+store.dispatch(addFavoriteThing("fried chicken"));
+store.dispatch(removeFavoriteThing("potatoes"));
+store.dispatch(setYouTubeTitle("Love is blind"));
+// store.dispatch(incrementViewCount(3));
+// store.dispatch(upvoteVideo(4));
+// store.dispatch(downvoteVideo(1));
